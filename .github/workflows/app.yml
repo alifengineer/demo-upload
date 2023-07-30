@@ -67,14 +67,8 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
 
-            # login to docker hub
+            docker stop go-demo-upload-api || true
 
-            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+            docker rm go-demo-upload-api || true
 
-            # stop and remove the container
-
-            docker stop $(echo $IMAGE_NAME) || true
-
-            docker rm $(echo $IMAGE_NAME) || true
-
-            docker run -d --name $(echo $IMAGE_NAME) -p 8081:8081 ${{ secrets.DOCKERHUB_USERNAME }}/$(echo $IMAGE_NAME):${{ github.sha }}
+            docker run -d --name go-demo-upload-api -p 8081:8081 ${{ secrets.DOCKERHUB_USERNAME }}/go-demo-upload-api:${{ github.sha }}
