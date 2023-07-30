@@ -68,5 +68,6 @@ jobs:
           script: |
             mkdir -p /home/app/$IMAGE_NAME
             cd /home/app/$IMAGE_NAME
+            cp /root/deploy.sh .
             chmod +x deploy.sh
             deploy.sh
