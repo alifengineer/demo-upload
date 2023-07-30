@@ -1,9 +1,15 @@
-FROM golang:1.18-alpine AS builder
+FROM golang:1.18-alpine
 
-WORKDIR /app
+RUN mkdir api 
 
-COPY go.mod go.sum ./
+WORKDIR /api
+
+COPY ./ ./
+
 RUN go mod download
+RUN go mod vendor
+RUN go build -o main ./cmd/main.go
 
-COPY . .
-RUN go build -o /app/bin/ ./cmd/...
+EXPOSE 8081
+
+CMD ["./main"]
