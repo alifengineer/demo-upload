@@ -1,11 +1,8 @@
 name: Go
 
-# env:
-
 env:
   REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
   IMAGE_NAME: go-demo-upload-api
-  IMAGE_TAG: $REGISTRY/$IMAGE_NAME:${{ github.sha | head -c 7 }}
 
 on:
   push:
@@ -60,7 +57,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${ echo $IMAGE_TAG }
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha | head -c 7 }}
 
       # - name: Deploy to server
       #   uses: appleboy/ssh-action@master
