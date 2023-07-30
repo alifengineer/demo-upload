@@ -1,9 +1,7 @@
-docker pull ${{ secrets.DOCKERHUB_USERNAME }}/go-app:${{ github.sha }}
+#!/bin/bash
 
-docker tag ${{ secrets.DOCKERHUB_USERNAME }}/go-app:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/go-app:latest
+docker stop $IMAGE_NAME || true
 
-docker stop go-app || true
+docker rm $IMAGE_NAME || true
 
-docker rm go-app || true
-
-docker run -d --name go-app -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/go-app:latest
+docker run -d --name $IMAGE_NAME -p 8081:8081 ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:${{ github.sha }}
