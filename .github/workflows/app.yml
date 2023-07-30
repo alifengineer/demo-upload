@@ -63,9 +63,10 @@ jobs:
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            mkdir -p /home/app/$IMAGE_NAME
             cd /home/app/$IMAGE_NAME
             chmod +x deploy.sh
             deploy.sh
