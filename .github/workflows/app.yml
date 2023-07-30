@@ -67,8 +67,14 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
 
-            docker stop $IMAGE_NAME || true
+            # login to docker hub
 
-            docker rm $IMAGE_NAME || true
+            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
-            docker run -d --name $IMAGE_NAME -p 8081:8081 ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:${{ github.sha }}
+            # stop and remove the container
+
+            docker stop $(echo $IMAGE_NAME) || true
+
+            docker rm $(echo $IMAGE_NAME) || true
+
+            docker run -d --name $(echo $IMAGE_NAME) -p 8081:8081 ${{ secrets.DOCKERHUB_USERNAME }}/$(echo $IMAGE_NAME):${{ github.sha }}
