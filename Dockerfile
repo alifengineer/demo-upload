@@ -1,14 +1,20 @@
-FROM golang:1.18-alpine
+FROM golang:1.19-alpine as builder
 
-RUN mkdir api 
-
-WORKDIR /api
+WORKDIR /app
 
 COPY ./ ./
 
-RUN go mod download
+RUN go mod download && go get -u ./...
+
 RUN go mod vendor
-RUN go build -o main ./cmd/main.go
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/main.go
+
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY --from=builder /app/main .
 
 EXPOSE 8081
 
